@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <app id="id"></app>
+    </head>
+    <body>
+        <div class="flex h-screen items-center justify-center">
+            <div id="app"></div>
+        </div>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <script type="module">
+            // Import reactivity elements from Vue
+            const { ref, watch } = Vue;
+
+            // Import vdom elemens from our own VDOM engine
+            import { h, mount, patch } from './vue-vdom.js';
+
+            const counter = ref(0);
+
+            // Render function
+            const render = () => {
+                return h('div', { class: 'text-center' }, [
+                    h(
+                        'h1',
+                        { class: 'text-3xl font-bold' },
+                        `Count: ${counter.value}`
+                    ),
+                    h(
+                        'button',
+                        {
+                            class: 'bg-gray-200 p-2 rounded',
+                            onClick: () => counter.value++,
+                        },
+                        'Click!'
+                    ),
+                ]);
+            };
+
+            // Initial DOM tree
+            let vdom = render();
+
+            // Mount the DOM tree
+            const app = document.getElementById('app');
+            mount(vdom, app);
+
+            // Watch for changes in the counter
+            watch(counter, () => {
+                // Patch the DOM tree
+                const vdomNew = render();
+                patch(vdom, vdomNew);
+                vdom = vdomNew;
+            });
+        </script>
+    </body>
+</html>
