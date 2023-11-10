@@ -15,7 +15,11 @@
         <script type="module">
             import { h, mount } from './vue-vdom-extended.js';
             import { vdom3 as vdom } from './vdom-examples.js';
+ 
+            // Creating vnodes
+            // const vdom = h('h1', null, 'Hello 👋');
 
+            // Mounting VDOM -------------------------------------
             const app = document.getElementById('app');
             mount(vdom, app);
         </script>
