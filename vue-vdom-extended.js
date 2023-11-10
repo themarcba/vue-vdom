@@ -29,18 +29,22 @@ export function mount(vnode, container) {
     }
 
     // Handle children
-    if (typeof vnode.children === 'string') {
-        el.textContent = vnode.children;
-    } else if (Array.isArray(node.children)) {
-        vnode.children.forEach(child => {
-            mount(child, el);
-        });
+    
+    const fragment = document.createDocumentFragment();
+  
+    if (typeof vnode.children === "string") {
+      el.textContent = vnode.children;
+    } else if (Array.isArray(vnode.children)) {
+      for (let i = 0, len = vnode.children.length; i < len; i++) {
+        mount(vnode.children[i], fragment);
+      }
     } else {
       mount(vnode.children, el);
   }
-
-    // Mount to the DOM
+  
+    el.appendChild(fragment);
     container.appendChild(el);
+
 }
 
 // Unmount a virtual node from the DOM
