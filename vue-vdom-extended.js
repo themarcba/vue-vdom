@@ -31,11 +31,13 @@ export function mount(vnode, container) {
     // Handle children
     if (typeof vnode.children === 'string') {
         el.textContent = vnode.children;
-    } else {
+    } else if (Array.isArray(node.children)) {
         vnode.children.forEach(child => {
             mount(child, el);
         });
-    }
+    } else {
+      mount(vnode.children, el);
+  }
 
     // Mount to the DOM
     container.appendChild(el);
